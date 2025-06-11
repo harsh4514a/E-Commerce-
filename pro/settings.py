@@ -107,11 +107,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "asia/kolkata"
+TIME_ZONE = "Asia/Kolkata"
 
+USE_TZ = True  # Recommended for production
 USE_I18N = True
-
-USE_TZ = True
+USE_L10N = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -131,3 +131,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 RAZORPAY_KEY_ID='rzp_test_8SMKJzQm8K4Y3e'
 RAZORPAY_KEY_SECRET='NbJaEr3HmYosFDeB2774Lnag'
 
+
+import os
+ALLOWED_HOSTS = ['*']  # For initial testing, tighten this later
+DEBUG = False  # For production
+
+# Add these if not present
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
