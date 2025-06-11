@@ -131,18 +131,3 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 RAZORPAY_KEY_ID='rzp_test_8SMKJzQm8K4Y3e'
 RAZORPAY_KEY_SECRET='NbJaEr3HmYosFDeB2774Lnag'
 
-import os
-ALLOWED_HOSTS = ['.onrender.com']
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-ALLOWED_HOSTS = ['.onrender.com', 'localhost']
-
-import os
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
-
-# Optional for Render
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
