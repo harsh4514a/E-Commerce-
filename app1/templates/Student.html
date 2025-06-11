@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" methos="POST">
+        {% csrf_token %}
+        <label for="">Name</label>
+        <input type="text" name="uname">
+        <label for="">Image</label>
+        {% comment %} <input type="email" name="uemail"> {% endcomment %}
+        <input type="file" name="img">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,72 @@
+{% extends "navbar.html" %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Orders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <style>
+    {% comment %} body {
+      padding: 40px;
+      background-color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    } {% endcomment %}
+    table th {
+      font-weight: 600;
+    }
+    .eye-btn {
+      background-color: #f1f1f1;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+    .eye-btn:hover {
+      background-color: #e0e0e0;
+    }
+    .eye-btn i {
+      color: black;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container my-5">
+  <h1 class="mb-5">Your Orders</h1>
+  {% for o in orders %}
+  <div class="order-card" style="border:1px solid #ddd; border-radius:8px; padding:20px; margin-bottom:30px; background:#fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+    <div class="order-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; font-weight:600; font-size:1.2rem; border-bottom:1px solid #ccc; padding-bottom:10px;">
+      <div>Order ID: {{ o.id }}</div>
+      <div>
+        <a href="/single_invoice/?id={{ o.id }}" class="btn btn-outline-secondary btn-sm" title="View Invoice" style="text-decoration:none; display:flex; align-items:center; gap:5px;">
+          <i class="bi bi-eye"></i> View Invoice
+        </a>
+      </div>
+    </div>
+    <div class="product-list" style="display:flex; flex-wrap:wrap; gap:20px;">
+      {% for item in o.prods.all %}
+      <div class="product-item" style="display:flex; align-items:center; gap:15px; border:1px solid #eee; border-radius:6px; padding:10px; width:100%; max-width:500px; background:#fafafa;">
+        <img src="{{ item.pro.image.url }}" alt="Product Image" style="height:100px; width:130px; object-fit:cover; border-radius:4px; margin-right:20px;">
+          <div class="product-details" style="flex-grow:1;">
+            <div class="product-name" style="font-weight:700; font-size:1.1rem; margin-bottom:8px; color:#222;">{{ item.pro.name }}</div>
+            <div class="product-qty" style="font-size:1rem; color:#333;">Quantity: <span style="font-weight:600;">{{ item.qty }}</span></div>
+            Status: <div class="product-qty" style="font-size:1rem; color:green;"><span style="font-weight:600;">{{ item.status }}</span></div>
+
+          </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="order-footer" style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+      <div class="order-total" style="font-weight:700; font-size:1.1rem;">Order Total: ₹{{ o.total_amount }}</div>
+    </div>
+  </div>
+  {% empty %}
+  <p>No orders found.</p>
+  {% endfor %}
+</div>
+
+</body>
+</html>
+{% endblock body %}

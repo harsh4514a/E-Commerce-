@@ -1,0 +1,199 @@
+{% extends "navbar.html" %}
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wishlist - E-commerce Store</title>
+    <meta name="description" content="Your Wishlist" />
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+      {% comment %} .navbar-cart-icon {
+        position: relative;
+      }
+      .cart-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+      } {% endcomment %}
+      .wishlist-item {
+        transition: all 0.3s ease;
+      }
+      .wishlist-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      }
+      .remove-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #dc3545;
+      }
+      .remove-btn:hover {
+        background: rgba(255, 255, 255, 1);
+        color: #dc3545;
+      }
+      
+    </style>
+  </head>
+
+  <body>
+   
+
+    <!-- Wishlist Content -->
+    <div class="container py-5">
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <h1 class="h2 fw-bold">My Wishlist</h1>
+        <button class="btn btn-outline-danger" onclick="clearWishlist()">
+          <i class="bi bi-trash me-1"></i> Clear All
+        </button>
+      </div>
+
+      <!-- Empty Wishlist Message -->
+      <div id="emptyWishlist" class="text-center py-5" style="display: none;">
+        <i class="bi bi-heart display-1 text-muted mb-3"></i>
+        <h3 class="text-muted mb-3">Your wishlist is empty</h3>
+        <p class="text-muted mb-4">Start adding products you love to your wishlist!</p>
+        <a href="{% url "index" %}" class="btn btn-dark">Continue Shopping</a>
+      </div>
+
+      <!-- Wishlist Items -->
+      <div id="wishlistItems" class="row g-4">
+        <!-- Wishlist items will be populated here by JavaScript -->
+      </div>
+    </div>
+
+   
+
+    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+      // Load wishlist from localStorage
+      function loadWishlist() {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        const wishlistContainer = document.getElementById('wishlistItems');
+        const emptyMessage = document.getElementById('emptyWishlist');
+        
+        if (wishlist.length === 0) {
+          wishlistContainer.style.display = 'none';
+          emptyMessage.style.display = 'block';
+          return;
+        }
+        
+        wishlistContainer.style.display = 'flex';
+        emptyMessage.style.display = 'none';
+        
+        wishlistContainer.innerHTML = wishlist.map(product => `
+          <div class="col-md-6 col-lg-4">
+            <div class="card wishlist-item border-0 shadow-sm position-relative">
+              <button class="remove-btn" onclick="removeFromWishlist(${product.id})">
+                <i class="bi bi-x-lg"></i>
+              </button>
+              <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <img src="${product.imageUrl || '/placeholder.svg'}" alt="${product.name}" class="img-fluid" style="max-height: 180px; object-fit: contain;">
+              </div>
+              <div class="card-body">
+                <h5 class="card-title fw-bold">${product.name}</h5>
+                <p class="text-muted small mb-2">Category: ${product.category}</p>
+                <p class="card-text text-truncate">${product.description}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="h5 fw-bold mb-0">$${product.price.toFixed(2)}</span>
+                  <small class="text-muted">${product.stock > 0 ? 'In Stock' : 'Out of Stock'}</small>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                  <a href="product-detail.html?id=${product.id}" class="btn btn-outline-dark">View Details</a>
+                  <button class="btn btn-dark" onclick="addToCart(${product.id})">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+      
+      // Remove item from wishlist
+      function removeFromWishlist(productId) {
+        let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        wishlist = wishlist.filter(item => item.id !== productId);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        loadWishlist();
+      }
+      
+      // Clear entire wishlist
+      function clearWishlist() {
+        if (confirm('Are you sure you want to clear your entire wishlist?')) {
+          localStorage.setItem('wishlist', JSON.stringify([]));
+          loadWishlist();
+        }
+      }
+      
+      // Add to cart function
+      {% comment %} function addToCart(productId) {
+        // Get existing cart
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        
+        // Check if item already exists in cart
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          // Get product details from wishlist
+          const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+          const product = wishlist.find(item => item.id === productId);
+          
+          if (product) {
+            cart.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              imageUrl: product.imageUrl,
+              quantity: 1
+            });
+          }
+        }
+         {% endcomment %}
+        // Save cart
+        {% comment %} localStorage.setItem('cart', JSON.stringify(cart));
+        
+        // Show success message
+        alert('Product added to cart!');
+        
+        // Update cart badge if it exists
+        updateCartBadge();
+      } {% endcomment %}
+      
+      // Update cart badge
+      {% comment %} function updateCartBadge() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const badge = document.querySelector('.cart-badge');
+        if (badge) {
+          badge.textContent = totalItems;
+        }
+      }
+      
+      // Load wishlist when page loads
+      window.addEventListener('DOMContentLoaded', function() {
+        loadWishlist();
+        updateCartBadge();
+      }); {% endcomment %}
+    </script>
+  </body>
+</html>
+{% endblock body %}

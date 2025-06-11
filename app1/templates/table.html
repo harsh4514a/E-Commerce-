@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        tr,td{
+            border: 2px solid black;
+            border-collapse: collapse;
+
+        }
+    </style>
+</head>
+<body>
+    <!-- {{category}}
+    {%for i in category%}
+    {{i.id}}
+    {{i.name}}
+    {{i.image}}
+    {%endfor%} -->
+    <table>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>image</th>
+        </tr>
+        {% for i in category %}
+        <tr>
+            <td>{{i.id}}</td>
+            <td>{{i.name}}</td>
+            <td><img src="{{i.image.url}}" alt=""></td>
+
+        </tr>
+        {% endfor %}
+
+    </table>
+</body>
+</html>
