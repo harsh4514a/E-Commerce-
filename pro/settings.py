@@ -27,10 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-4g73fp6^xdm7c4$mxawxc!3hcgm+$b$0+os(waluid!wk(gnl#"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
 
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+DEBUG = config('DEBUG', default=False, cast=bool)
 
+ALLOWED_HOSTS = ['pro.onrender.com']  # Replace with your Render URL
 
 # Application definition
 
@@ -85,17 +87,24 @@ WSGI_APPLICATION = "pro.wsgi.application"
 #         "NAME": BASE_DIR / "db.sqlite3",
 #     }
 # }
-import os
+# import os
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv("e_commers_wfka"),
+#         'USER': os.getenv("e_commers_wfka_user"),
+#         'PASSWORD': os.getenv("4bqy7Q6yXviDHk30sVQwd9tovOWqlvY0"),
+#         'HOST': os.getenv("dpg-d14n4fe3jp1c73bjmg20-a"),
+#         'PORT': os.getenv("DB_PORT", "5432"),
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("e_commers_wfka"),
-        'USER': os.getenv("e_commers_wfka_user"),
-        'PASSWORD': os.getenv("4bqy7Q6yXviDHk30sVQwd9tovOWqlvY0"),
-        'HOST': os.getenv("dpg-d14n4fe3jp1c73bjmg20-a"),
-        'PORT': os.getenv("DB_PORT", "5432"),
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('postgresql://e_commers_wfka_user:4bqy7Q6yXviDHk30sVQwd9tovOWqlvY0@dpg-d14n4fe3jp1c73bjmg20-a.oregon-postgres.render.com/e_commers_wfka')
+    )
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -146,9 +155,7 @@ RAZORPAY_KEY_ID='rzp_test_8SMKJzQm8K4Y3e'
 RAZORPAY_KEY_SECRET='NbJaEr3HmYosFDeB2774Lnag'
 
 
-DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['your-project-name.onrender.com']  # Replace with your Render URL
 
 
 # Add these if not present
