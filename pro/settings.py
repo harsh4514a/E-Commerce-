@@ -32,7 +32,8 @@ SECRET_KEY = "django-insecure-4g73fp6^xdm7c4$mxawxc!3hcgm+$b$0+os(waluid!wk(gnl#
 # ALLOWED_HOSTS = []
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['pro.onrender.com']  # Replace with your Render URL
+ALLOWED_HOSTS = ['pro.onrender.com', 'localhost', '127.0.0.1']
+
 
 # Application definition
 
