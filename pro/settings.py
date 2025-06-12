@@ -9,6 +9,10 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import os
+from decouple import config
+import dj_database_url
+
 
 from pathlib import Path
 
@@ -127,7 +131,7 @@ USE_L10N = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+# STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -142,9 +146,12 @@ RAZORPAY_KEY_ID='rzp_test_8SMKJzQm8K4Y3e'
 RAZORPAY_KEY_SECRET='NbJaEr3HmYosFDeB2774Lnag'
 
 
-ALLOWED_HOSTS = ['*']  # For initial testing, tighten this later
-DEBUG = False  # For production
+DEBUG = config('DEBUG', default=False, cast=bool)
+
+ALLOWED_HOSTS = ['your-project-name.onrender.com']  # Replace with your Render URL
+
 
 # Add these if not present
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
