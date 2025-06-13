@@ -55,7 +55,7 @@ class Cart(models.Model):
     total_amount = models.PositiveIntegerField()
     order_id = models.PositiveBigIntegerField(default=0)
     ordered = models.BooleanField(default=False)
-    status = models.CharField(choices=STATUS,verbose_name="Order Status",default="Pending")
+    status = models.CharField(choices=STATUS,verbose_name="Order Status",default="Pending",max_length=20)
     
     
     def __str__(self):
